@@ -6,8 +6,10 @@ authors = ["Martins Bruveris <martins.bruveris@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "~3.8"
-numpy = "*"
+binarytree = "*"
 click = "*"
+numpy = "*"
+tqdm = "*"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }
