@@ -1,5 +1,5 @@
-import itertools
 import math
+from itertools import permutations
 from pathlib import Path
 
 import click
@@ -13,9 +13,7 @@ def parse_inner(line: str) -> (Node, str):
         assert line[0] == ","
         right, line = parse_inner(line[1:])
         assert line[0] == "]"
-        root = Node(-1)
-        root.left = left
-        root.right = right
+        root = Node(-1, left=left, right=right)
         return root, line[1:]
     elif line[0] in "0123456789":
         num = int(line[0])
@@ -32,51 +30,49 @@ def parse_number(line: str) -> Node:
 
 
 def add(a: Node, b: Node) -> Node:
-    c = Node(-1)
-    # We need to clone `a` and `b`, because trees are modified in place by reduce
-    # operations.
-    c.left = a.clone()
-    c.right = b.clone()
-    c = reduce(c)
+    # We need to clone `a` and `b`, because trees are modified in place by `reduce`.
+    c = Node(-1, left=a.clone(), right=b.clone())
+    reduce(c)
     return c
 
 
-def reduce(number: Node) -> Node:
+def reduce(number: Node):
+    # Note that `explode` and `split` modify `number` in place
     while True:
         if number.height > 4:
-            number = explode(number)
-            continue
+            explode(number)
         elif max(n.value for n in number.leaves) >= 10:
-            number = split(number)
-            continue
+            split(number)
         else:
             break
-    return number
 
 
-def explode(number: Node) -> Node:
+def explode(number: Node):
     # Select the first node in the lowest level
     left = number.levels[-1][0]
     parent = get_parent(number, left)
     right = parent.right
+    assert right is number.levels[-1][1]  # Just a sanity-check
 
     # Find all leaves in correct order
     leaves = number.inorder
     leaves = [leaf for leaf in leaves if leaf.left is None and leaf.right is None]
 
     # Add number to left
-    left_idx = 0
+    left_idx = -1
     for left_idx, node in enumerate(leaves):
         if node is left:
             break
+    assert left_idx != -1
     if left_idx > 0:
         leaves[left_idx - 1].value += left.value
 
     # Add number to right
-    right_idx = 0
+    right_idx = -1
     for right_idx, node in enumerate(leaves):
         if node is right:
             break
+    assert right_idx != -1
     if right_idx < len(leaves) - 1:
         leaves[right_idx + 1].value += right.value
 
@@ -85,10 +81,8 @@ def explode(number: Node) -> Node:
     parent.left = None
     parent.right = None
 
-    return number
 
-
-def split(number: Node) -> Node:
+def split(number: Node):
     # Find all leaves in correct order
     leaves = number.inorder
     leaves = [leaf for leaf in leaves if leaf.left is None and leaf.right is None]
@@ -98,15 +92,13 @@ def split(number: Node) -> Node:
 
     # Nothing to be split
     if not leaves:
-        return number
+        return
 
-    # Do splitting
+    # Split the first selected leaf
     leaf = leaves[0]
     leaf.left = Node(math.floor(leaf.value / 2))
     leaf.right = Node(math.ceil(leaf.value / 2))
     leaf.value = -1
-
-    return number
 
 
 def magnitude(number: Node) -> int:
@@ -126,11 +118,8 @@ def solve_part_a(numbers):
 
 
 def solve_part_b(numbers):
-    max_sum = 0
-    total = len(numbers) * (len(numbers) - 1)
-    for a, b in tqdm(itertools.permutations(numbers, 2), total=total):
-        max_sum = max(max_sum, magnitude(add(a, b)))
-    return max_sum
+    sums = [magnitude(add(a, b)) for a, b in tqdm(list(permutations(numbers, 2)))]
+    return max(sums)
 
 
 @click.command()
