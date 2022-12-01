@@ -13,7 +13,7 @@ pandas = "*"
 tqdm = "*"
 
 [tool.poetry.dev-dependencies]
-black = { version = "*", allow-prereleases = true }
+black = "*"
 flake8 = "*"
 isort = "*"
 pytest = "*"
