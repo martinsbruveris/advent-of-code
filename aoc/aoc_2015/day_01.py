@@ -10,20 +10,13 @@ def main(filename, part):
     filename = Path(filename)
     text = filename.read_text()
 
-    pos = 0
+    cmd2dir = {"(": 1, ")": -1}
+    idx, pos = 0, 0
     for idx, c in enumerate(text, start=1):
-        if c == "(":
-            pos += 1
-        elif c == ")":
-            pos -= 1
-
+        pos += cmd2dir[c]
         if part == "b" and pos < 0:
             break
-
-    if part == "a":
-        print(pos)
-    else:
-        print(idx)
+    print(pos if part == "a" else idx)
 
 
 if __name__ == "__main__":
