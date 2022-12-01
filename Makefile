@@ -1,7 +1,7 @@
-check_dirs := 2021/code 2022/code
+check_dirs := aoc tests
 
 test:
-	cd 2022 && poetry run pytest tests
+	poetry run pytest tests -s -v
 
 # This target runs checks on all files and potentially modifies some of them
 style:
