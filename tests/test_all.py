@@ -6,7 +6,7 @@ from click.testing import CliRunner
 
 
 def solved_puzzles(year=None):
-    solved = {2015: [1], 2021: [1, 4, 9], 2022: [1]}
+    solved = {2015: [1], 2021: range(1, 10), 2022: [1]}
     if year is not None:
         solved_list = [(year, day) for day in solved[year]]
     else:
@@ -22,12 +22,14 @@ def solved_puzzles(year=None):
 def test_one_puzzle(year: int, day: int, part: str, test: bool):
     mod = importlib.import_module(f"aoc.aoc_{year}.day_{day:02}")
     input_file = f"data/{year}/day_{day:02}" + ("_test" if test else "") + ".txt"
-    num_result = read_result(year, day, part, test)
+    exp_result = read_result(year, day, part, test)
 
     runner = CliRunner()
     run_result = runner.invoke(mod.main, ["--part", part, input_file])
+    # There is always a `\n` at the end, leading to an empty string when we split.
+    result = run_result.output.split("\n")[-2]
     assert run_result.exit_code == 0
-    assert int(run_result.output) == num_result
+    assert int(result) == exp_result
 
 
 def read_result(year: int, day: int, part: str, test: bool) -> int:

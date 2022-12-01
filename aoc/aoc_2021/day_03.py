@@ -21,15 +21,29 @@ def filter_numbers(numbers, criterium):
 
 @click.command()
 @click.argument("filename")
-def main(filename):
+@click.option("--part", type=click.Choice(["a", "b"]))
+def main(filename, part):
     filename = Path(filename)
     numbers = filename.read_text().split("\n")
     numbers = [list(num) for num in numbers]
     numbers = np.array(numbers).astype(int)
 
-    oxygen = filter_numbers(numbers, "most")
-    co2 = filter_numbers(numbers, "least")
-    print(oxygen * co2)
+    if part == "a":
+        nb_ones = np.sum(numbers, axis=0)
+        gamma = (nb_ones > numbers.shape[0] // 2).astype(int)
+        epsilon = (nb_ones < numbers.shape[0] // 2).astype(int)
+
+        n = numbers.shape[1]
+        powers = np.asarray([2 ** (n - j - 1) for j in range(n)])
+
+        gamma = np.sum(gamma * powers)
+        epsilon = np.sum(epsilon * powers)
+        result = gamma * epsilon
+    else:
+        oxygen = filter_numbers(numbers, "most")
+        co2 = filter_numbers(numbers, "least")
+        result = oxygen * co2
+    print(result)
 
 
 if __name__ == "__main__":
