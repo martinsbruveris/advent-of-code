@@ -4,7 +4,6 @@ from pathlib import Path
 
 import click
 from binarytree import Node, get_parent
-from tqdm import tqdm
 
 
 def parse_inner(line: str) -> (Node, str):
@@ -118,7 +117,7 @@ def solve_part_a(numbers):
 
 
 def solve_part_b(numbers):
-    sums = [magnitude(add(a, b)) for a, b in tqdm(list(permutations(numbers, 2)))]
+    sums = [magnitude(add(a, b)) for a, b in list(permutations(numbers, 2))]
     return max(sums)
 
 

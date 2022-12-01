@@ -6,7 +6,7 @@ from click.testing import CliRunner
 
 
 def solved_puzzles():
-    solved = {"2021": [1], "2022": [1]}
+    solved = {"2021": [1, 4, 18], "2022": [1]}
     solved_list = [(year, day) for year, day_list in solved.items() for day in day_list]
     return solved_list
 
