@@ -1,4 +1,7 @@
-check_dirs := code
+check_dirs := 2021/code 2022/code
+
+test:
+	cd 2022 && poetry run pytest tests
 
 # This target runs checks on all files and potentially modifies some of them
 style:

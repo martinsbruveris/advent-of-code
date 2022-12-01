@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "advent-of-code"
 version = "0.0.1"
-description = "Solutions to Advent of Code 2021"
+description = "Solutions to Advent of Code"
 authors = ["Martins Bruveris <martins.bruveris@gmail.com>"]
 
 [tool.poetry.dependencies]
@@ -9,12 +9,14 @@ python = "~3.8"
 binarytree = "*"
 click = "*"
 numpy = "*"
+pandas = "*"
 tqdm = "*"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }
 flake8 = "*"
 isort = "*"
+pytest = "*"
 
 [tool.black]
 line-length = 88
