@@ -6,7 +6,7 @@ from click.testing import CliRunner
 
 
 def solved_puzzles(year=None):
-    solved = {2015: [1], 2021: [1, 4, 18], 2022: [1]}
+    solved = {2015: [1], 2021: [1, 4, 9], 2022: [1]}
     if year is not None:
         solved_list = [(year, day) for day in solved[year]]
     else:
@@ -18,7 +18,7 @@ def solved_puzzles(year=None):
 
 @pytest.mark.parametrize("test", [True, False])
 @pytest.mark.parametrize("part", ["a", "b"])
-@pytest.mark.parametrize("year, day", solved_puzzles(year=2015))
+@pytest.mark.parametrize("year, day", solved_puzzles())
 def test_one_puzzle(year: int, day: int, part: str, test: bool):
     mod = importlib.import_module(f"aoc.aoc_{year}.day_{day:02}")
     input_file = f"data/{year}/day_{day:02}" + ("_test" if test else "") + ".txt"
