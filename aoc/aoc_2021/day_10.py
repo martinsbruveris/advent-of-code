@@ -1,4 +1,5 @@
 from collections import deque
+from functools import reduce
 from pathlib import Path
 
 import click
@@ -8,9 +9,9 @@ def parse(line):
     stack = deque()
     for c in line:
         if c in "([{<":
-            stack.append(c)
+            stack.appendleft(c)
         else:
-            e = stack.pop()
+            e = stack.popleft()
             if e + c not in {"()", "[]", "{}", "<>"}:
                 return c, stack
     return None, stack
@@ -35,11 +36,8 @@ def main(filename, part):
             c, stack = parse(line)
             if c is not None:
                 continue
-            line_score = 0
-            stack.reverse()
-            for e in stack:
-                line_score = 5 * line_score + points_map[e]
-            scores.append(line_score)
+            score = reduce(lambda a, b: 5 * a + points_map[b], stack, 0)
+            scores.append(score)
         scores = sorted(scores)
         result = scores[len(scores) // 2]
 
