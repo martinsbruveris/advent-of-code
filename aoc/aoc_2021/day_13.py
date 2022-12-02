@@ -37,7 +37,6 @@ def main(filename, part):
         s = "\n".join(["".join(map(str, line)) for line in arr.T])
         s = s.replace("1", "*").replace("0", " ")
         print(s)
-        print("ECFHLHZF")
         result = -1
 
     print(result)
