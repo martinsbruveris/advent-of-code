@@ -6,7 +6,7 @@ from click.testing import CliRunner
 
 
 def solved_puzzles(year=None):
-    solved = {2015: [1], 2021: range(1, 12), 2022: range(1, 3)}
+    solved = {2015: [1], 2021: range(1, 13), 2022: range(1, 3)}
     if year is not None:
         solved_list = [(year, day) for day in solved[year]]
     else:
