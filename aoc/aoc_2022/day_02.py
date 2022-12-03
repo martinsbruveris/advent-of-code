@@ -1,7 +1,4 @@
 from itertools import starmap
-from pathlib import Path
-
-import click
 
 
 def outcome(a, b):
@@ -22,12 +19,8 @@ def strategy(a, o):
         return 3 if a == 1 else a - 1
 
 
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    lines = filename.read_text().split("\n")
+def main(data, part):
+    lines = data.split("\n")
     cmds = [tuple(line.split(" ")) for line in lines]
 
     if part == "a":
@@ -47,8 +40,4 @@ def main(filename, part):
         outcomes = map(lambda c: c[1], cmds)
         result = sum(outcomes) + sum(me)
 
-    print(result)
-
-
-if __name__ == "__main__":
-    main()
+    return result

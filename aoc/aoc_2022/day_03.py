@@ -1,14 +1,5 @@
-from pathlib import Path
-
-import click
-
-
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    lines = filename.read_text().split("\n")
+def main(data, part):
+    lines = data.split("\n")
 
     result = 0
     if part == "a":
@@ -22,9 +13,4 @@ def main(filename, part):
             item = (set(lines[j]) & set(lines[j + 1]) & set(lines[j + 2])).pop()
             priority = ord(item) - 96 if item.islower() else ord(item) - 38
             result += priority
-
-    print(result)
-
-
-if __name__ == "__main__":
-    main()
+    return result

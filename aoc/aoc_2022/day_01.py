@@ -1,14 +1,5 @@
-from pathlib import Path
-
-import click
-
-
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    lines = filename.read_text().split("\n")
+def main(data, part):
+    lines = data.split("\n")
 
     elves = [[]]
     for line in lines:
@@ -26,8 +17,4 @@ def main(filename, part):
         result = total[-1]
     else:
         result = sum(total[-3:])
-    print(result)
-
-
-if __name__ == "__main__":
-    main()
+    return result

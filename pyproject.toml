@@ -3,9 +3,13 @@ name = "advent-of-code"
 version = "0.0.1"
 description = "Solutions to Advent of Code"
 authors = ["Martins Bruveris <martins.bruveris@gmail.com>"]
+packages = [
+    { include = "aoc" },
+]
 
 [tool.poetry.dependencies]
 python = "~3.8"
+advent-of-code-data = "*"
 binarytree = "*"
 click = "*"
 numpy = "*"
@@ -17,6 +21,12 @@ black = "*"
 flake8 = "*"
 isort = "*"
 pytest = "*"
+
+[tool.poetry.scripts]
+solve = "aoc.solve:cli"
+
+[tool.poetry.plugins."adventofcode.user"]
+martins = "aoc.solve:plugin"
 
 [tool.black]
 line-length = 88
