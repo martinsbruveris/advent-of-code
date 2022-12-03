@@ -12,11 +12,6 @@ def main(filename, part):
     edges = filename.read_text().split("\n")
     edges = [edge.split("-") for edge in edges]
 
-    adj = defaultdict(lambda: defaultdict(lambda: False))
-    for e1, e2 in edges:
-        adj[e1][e2] = True
-        adj[e2][e1] = True
-
     neighbors = defaultdict(set)
     for e1, e2 in edges:
         neighbors[e1].add(e2)
