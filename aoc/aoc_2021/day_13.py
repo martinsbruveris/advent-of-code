@@ -34,9 +34,11 @@ def main(filename, part):
     else:
         for f in folds:
             arr = fold(arr, *f)
+        # Pretty printing of result
         s = "\n".join(["".join(map(str, line)) for line in arr.T])
         s = s.replace("1", "*").replace("0", " ")
         print(s)
+        # Result are letters displayed above, this is a dummy result
         result = -1
 
     print(result)
