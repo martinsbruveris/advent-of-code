@@ -1,6 +1,3 @@
-from pathlib import Path
-
-import click
 import numpy as np
 
 
@@ -12,18 +9,14 @@ def parse_board(lines):
     return board
 
 
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    lines = filename.read_text().split("\n")
+def main(data, part):
+    lines = data.split("\n")
     numbers = [int(num) for num in lines[0].split(",")]
     boards = [parse_board(lines[j : j + 5]) for j in range(2, len(lines), 6)]
     boards = np.asarray(boards)  # 3D array of shape (N, 5, 5)
 
     masks = np.zeros_like(boards)  # Which numbers have been hit
-    idx = -1
+    number, idx = 0, -1
     for number in numbers:
         masks[boards == number] = 1
         # We only care about the fullest row/column in each board
@@ -46,8 +39,4 @@ def main(filename, part):
 
     uncalled = np.sum(boards[idx][masks[idx] == 0])
     score = uncalled * number
-    print(score)
-
-
-if __name__ == "__main__":
-    main()
+    return score

@@ -1,7 +1,5 @@
 from math import prod
-from pathlib import Path
 
-import click
 import numpy as np
 
 
@@ -26,12 +24,8 @@ def basin_size(arr, x, y):
     return np.sum(member)
 
 
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    heights = filename.read_text().split("\n")
+def main(data, part):
+    heights = data.split("\n")
     heights = [[int(height) for height in line] for line in heights]
     heights = np.asarray(heights)
 
@@ -55,9 +49,4 @@ def main(filename, part):
         ]
         basins.sort(reverse=True)
         result = prod(basins[:3])
-
-    print(result)
-
-
-if __name__ == "__main__":
-    main()
+    return result

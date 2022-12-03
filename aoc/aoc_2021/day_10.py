@@ -1,8 +1,5 @@
 from collections import deque
 from functools import reduce
-from pathlib import Path
-
-import click
 
 
 def parse(line):
@@ -17,12 +14,8 @@ def parse(line):
     return None, stack
 
 
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    lines = filename.read_text().split("\n")
+def main(data, part):
+    lines = data.split("\n")
 
     if part == "a":
         points_map = {None: 0, ")": 3, "]": 57, "}": 1197, ">": 25137}
@@ -40,9 +33,4 @@ def main(filename, part):
             scores.append(score)
         scores = sorted(scores)
         result = scores[len(scores) // 2]
-
-    print(result)
-
-
-if __name__ == "__main__":
-    main()
+    return result

@@ -14,7 +14,6 @@ binarytree = "*"
 click = "*"
 numpy = "*"
 pandas = "*"
-tqdm = "*"
 
 [tool.poetry.dev-dependencies]
 black = "*"

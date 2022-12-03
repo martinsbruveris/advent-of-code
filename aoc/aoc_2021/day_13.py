@@ -1,23 +1,24 @@
-from pathlib import Path
-
-import click
 import numpy as np
+
+from aoc.ocr import aocr
 
 
 def fold(arr, axis, at):
     if axis == "x":
-        arr = np.maximum(arr[:at, :], arr[: -at - 1 : -1, :])
+        folded = arr[at + 1 :, :]
+        w = folded.shape[0]
+        arr = arr[:at, :].copy()
+        arr[-w:, :] = np.maximum(arr[-w:, :], folded[::-1, :])
     else:
-        arr = np.maximum(arr[:, :at], arr[:, : -at - 1 : -1])
+        folded = arr[:, at + 1 :]
+        h = folded.shape[1]
+        arr = arr[:, :at].copy()
+        arr[:, -h:] = np.maximum(arr[:, -h:], folded[:, ::-1])
     return arr
 
 
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    lines = filename.read_text().split("\n")
+def main(data, part):
+    lines = data.split("\n")
     idx = len("fold along ")
     folds = [(ln[idx], int(ln[idx + 2 :])) for ln in lines if ln.startswith("f")]
     dots = [ln.split(",") for ln in lines[: -len(folds) - 1]]
@@ -34,15 +35,6 @@ def main(filename, part):
     else:
         for f in folds:
             arr = fold(arr, *f)
-        # Pretty printing of result
-        s = "\n".join(["".join(map(str, line)) for line in arr.T])
-        s = s.replace("1", "*").replace("0", " ")
-        print(s)
-        # Result are letters displayed above, this is a dummy result
-        result = -1
+        result = aocr(arr.T)
 
-    print(result)
-
-
-if __name__ == "__main__":
-    main()
+    return result

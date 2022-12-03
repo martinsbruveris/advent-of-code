@@ -1,7 +1,5 @@
 from itertools import count
-from pathlib import Path
 
-import click
 import numpy as np
 
 
@@ -22,12 +20,8 @@ def step(arr):
     return flashes, arr
 
 
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    energies = filename.read_text().split("\n")
+def main(data, part):
+    energies = data.split("\n")
     energies = [[int(e) for e in line] for line in energies]
     energies = np.asarray(energies)
 
@@ -42,9 +36,4 @@ def main(filename, part):
             if np.sum(energies) == 0:
                 break
         result = j
-
-    print(result)
-
-
-if __name__ == "__main__":
-    main()
+    return result

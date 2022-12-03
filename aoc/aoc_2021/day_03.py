@@ -1,6 +1,3 @@
-from pathlib import Path
-
-import click
 import numpy as np
 
 
@@ -19,12 +16,8 @@ def filter_numbers(numbers, criterium):
     return result
 
 
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    numbers = filename.read_text().split("\n")
+def main(data, part):
+    numbers = data.split("\n")
     numbers = [list(num) for num in numbers]
     numbers = np.array(numbers).astype(int)
 
@@ -43,8 +36,4 @@ def main(filename, part):
         oxygen = filter_numbers(numbers, "most")
         co2 = filter_numbers(numbers, "least")
         result = oxygen * co2
-    print(result)
-
-
-if __name__ == "__main__":
-    main()
+    return result

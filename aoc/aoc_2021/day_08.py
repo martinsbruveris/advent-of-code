@@ -1,8 +1,3 @@
-from pathlib import Path
-
-import click
-
-
 def parse_line(line):
     patterns, output = line.split(" | ")
     patterns = ["".join(sorted(s)) for s in patterns.split(" ")]
@@ -58,20 +53,12 @@ def decode_output(line):
     return result
 
 
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    lines = filename.read_text().split("\n")
+def main(data, part):
+    lines = data.split("\n")
 
     if part == "a":
         result = count_1478(lines)
     else:
         outputs = [decode_output(line) for line in lines]
         result = sum(outputs)
-    print(result)
-
-
-if __name__ == "__main__":
-    main()
+    return result

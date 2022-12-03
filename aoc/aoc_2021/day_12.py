@@ -1,15 +1,8 @@
 from collections import defaultdict, deque
-from pathlib import Path
-
-import click
 
 
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    edges = filename.read_text().split("\n")
+def main(data, part):
+    edges = data.split("\n")
     edges = [edge.split("-") for edge in edges]
 
     neighbors = defaultdict(set)
@@ -34,8 +27,4 @@ def main(filename, part):
             elif part == "b" and dst != "start" and not twice:
                 storage.append((dst, visited, True))
 
-    print(count)
-
-
-if __name__ == "__main__":
-    main()
+    return count

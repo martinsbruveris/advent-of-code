@@ -1,6 +1,3 @@
-from pathlib import Path
-
-import click
 import numpy as np
 
 
@@ -11,12 +8,8 @@ def parse_line(line):
     return src + dst
 
 
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    lines = filename.read_text().split("\n")
+def main(data, part):
+    lines = data.split("\n")
     lines = [parse_line(line) for line in lines]
     lines = np.asarray(lines)  # Each row has format (x1, y1, x2, y2)
 
@@ -43,8 +36,4 @@ def main(filename, part):
                 board[line[0] + j * dx, line[1] + j * dy] += 1
 
     nb_overlaps = np.sum(board >= 2)
-    print(nb_overlaps)
-
-
-if __name__ == "__main__":
-    main()
+    return nb_overlaps

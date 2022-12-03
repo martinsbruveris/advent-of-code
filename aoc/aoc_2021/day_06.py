@@ -1,8 +1,4 @@
-from pathlib import Path
-
-import click
 import numpy as np
-from tqdm import tqdm
 
 
 def simulate_cycle(state):
@@ -17,12 +13,8 @@ def simulate_cycle(state):
     return state
 
 
-@click.command()
-@click.argument("filename")
-@click.option("--part", type=click.Choice(["a", "b"]))
-def main(filename, part):
-    filename = Path(filename)
-    state = filename.read_text().split(",")
+def main(data, part):
+    state = data.split(",")
     state = np.asarray(state).astype(int)
 
     # Convert state to counts
@@ -32,11 +24,7 @@ def main(filename, part):
         state[v] = c
 
     nb_days = 80 if part == "a" else 256
-    for _ in tqdm(range(nb_days)):
+    for _ in range(nb_days):
         state = simulate_cycle(state)
     result = np.sum(state)
-    print(result)
-
-
-if __name__ == "__main__":
-    main()
+    return result
