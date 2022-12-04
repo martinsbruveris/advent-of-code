@@ -15,7 +15,6 @@ def parse_packet(bits, idx):
     versions = [int(bits[idx : idx + 3], 2)]
     type_id = int(bits[idx + 3 : idx + 6], 2)
     idx += 6
-    value = 0
     if type_id == 4:  # Parse literal
         number = ""
         while bits[idx] == "1":
@@ -50,7 +49,5 @@ def parse_packet(bits, idx):
 
 def main(data, part):
     bits = "".join(f"{int(c, 16):04b}" for c in data)
-
     versions, value, _ = parse_packet(bits, 0)
-    result = sum(versions) if part == "a" else value
-    return result
+    return sum(versions) if part == "a" else value
