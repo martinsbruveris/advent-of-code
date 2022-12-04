@@ -10,10 +10,10 @@ packages = [
 [tool.poetry.dependencies]
 python = "~3.8"
 advent-of-code-data = "*"
-binarytree = "*"
 click = "*"
 numpy = "*"
 pandas = "*"
+setuptools = "*"
 
 [tool.poetry.dev-dependencies]
 black = "*"
