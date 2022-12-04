@@ -1,20 +1,7 @@
 def main(data, part):
-    lines = data.split("\n")
-
-    elves = [[]]
-    for line in lines:
-        if line == "":
-            elves.append([])
-        else:
-            elves[-1].append(int(line))
-    if len(elves[-1]) == 0:
-        elves.pop()
-
-    total = map(sum, elves)
-    total = sorted(total)
-
-    if part == "a":
-        result = total[-1]
-    else:
-        result = sum(total[-3:])
+    elves = data.split("\n\n")
+    elves = map(lambda s: sum(map(int, s.split("\n"))), elves)
+    elves = sorted(elves)
+    idx = -1 if part == "a" else -3
+    result = sum(elves[idx:])
     return result
