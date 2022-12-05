@@ -49,12 +49,12 @@ def explode(number, idx):
         if number[j] not in {"[", "]"}:
             number[j] += number[idx + 1]
             break
-    return number[: idx - 1] + [0] + number[idx + 3:]
+    return number[: idx - 1] + [0] + number[idx + 3 :]
 
 
 def split(number, idx):
     pair = ["[", math.floor(number[idx] / 2), math.ceil(number[idx] / 2), "]"]
-    return number[:idx] + pair + number[idx+1:]
+    return number[:idx] + pair + number[idx + 1 :]
 
 
 def magnitude(number) -> int:

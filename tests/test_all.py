@@ -1,18 +1,13 @@
 import importlib
+from pathlib import Path
 
 import pandas as pd
 import pytest
-from click.testing import CliRunner
 
 
-def solved_puzzles(year=None):
-    solved = {2015: [1], 2021: range(1, 14), 2022: range(1, 4)}
-    if year is not None:
-        solved_list = [(year, day) for day in solved[year]]
-    else:
-        solved_list = [
-            (year, day) for year, day_list in solved.items() for day in day_list
-        ]
+def solved_puzzles():
+    solved = {2015: [1], 2021: range(1, 19), 2022: range(1, 5)}
+    solved_list = [(year, day) for year, day_list in solved.items() for day in day_list]
     return solved_list
 
 
@@ -24,15 +19,13 @@ def test_one_puzzle(year: int, day: int, part: str, test: bool):
     input_file = f"data/{year}/day_{day:02}" + ("_test" if test else "") + ".txt"
     exp_result = read_result(year, day, part, test)
 
-    runner = CliRunner()
-    run_result = runner.invoke(mod.main, ["--part", part, input_file])
-    # There is always a `\n` at the end, leading to an empty string when we split.
-    result = run_result.output.split("\n")[-2]
-    assert run_result.exit_code == 0
-    assert int(result) == exp_result
+    data = Path(input_file).read_text()
+    result = mod.main(data, part)
+
+    assert str(result) == exp_result
 
 
-def read_result(year: int, day: int, part: str, test: bool) -> int:
-    df = pd.read_csv(f"data/{year}/outputs.csv", index_col=0)
+def read_result(year: int, day: int, part: str, test: bool) -> str:
+    df = pd.read_csv(f"data/{year}/outputs.csv", index_col=0, dtype=str)
     col = part + ("_test" if test else "")
     return df.loc[day, col]
