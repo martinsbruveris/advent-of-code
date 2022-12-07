@@ -6,7 +6,7 @@ import pytest
 
 
 def solved_puzzles():
-    solved = {2015: [1], 2021: range(1, 19), 2022: range(1, 6)}
+    solved = {2015: [1], 2021: range(1, 19), 2022: range(1, 8)}
     solved_list = [(year, day) for year, day_list in solved.items() for day in day_list]
     return solved_list
 
